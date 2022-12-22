@@ -326,59 +326,125 @@ class _CartScreenState extends State<CartScreen> {
               },
             ),
 
-            Consumer<CartProvider>
-            (
-              builder:(context,value,child)
-              {
-                return Visibility
-                (
-                  visible: value.getTotalPrice().toStringAsFixed(2).toString() == "0.00" ? false:true,
-                  child: Column(
-                    children: [
-                      // ReusableWidget(title:'SubTotal', value: r'$'+value.getTotalPrice().toStringAsFixed(2)),
-                      // ReusableWidget(title:'Discount 5%', value: r'$'+'20'),
-                      ReusableWidget(title:'Total', value: r'$'+value.getTotalPrice().toStringAsFixed(2)),
-                      const Divider(),
-                      InkWell
+            Expanded(
+              flex: 0,
+              child: Consumer<CartProvider>
+              (
+                builder:(context,value,child)
+                {
+                  return Visibility
+                  (
+                    visible: value.getTotalPrice().toStringAsFixed(2).toString() == "0.00" ? false:true,
+                    child: Card(
+                      elevation: 8.0,
+                      shape: const RoundedRectangleBorder
                       (
-                        onTap: ()
-                        {
-                          value.deleteAllTableRecords();
-                          value.setCounterToZero();
-                          value.setTotalPriceToZero();
-                          value.getItemId().then((listOfId) => print(listOfId));
-                          Scaffold.of(context).showSnackBar(SnackBar(content:Text("Items deleted on successfully payment")));
-                        },
-                        child: Container
+                        //side: BorderSide(color: Colors.blue,width: 1.5),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0))
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+                            // ReusableWidget(title:'SubTotal', value: r'$'+value.getTotalPrice().toStringAsFixed(2)),
+                            // ReusableWidget(title:'Discount 5%', value: r'$'+'20'),
+                            ReusableWidget(title:'Total', value: r'$'+value.getTotalPrice().toStringAsFixed(2)),
+                            //const Divider(),
+                            const SizedBox(height: 5.0,),
+                            Row
                             (
-                              width: 100,
-                              //width: double.infinity,
-                              height: 35,
-                              decoration: BoxDecoration
-                              (
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(5.0)
-                              ),
-                              child: const Padding(
-                                padding:  EdgeInsets.all(8.0),
-                                child: const Text
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: 
+                              [
+                                Container
                                 (
-                                  "Pay now",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle
+                                  width: 200,
+                                  height: 50,
+                                  child: TextFormField
                                   (
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400
+                                    textAlign: TextAlign.center,
+                                    decoration: const InputDecoration
+                                                      (
+                                                        hintText: 'Apply Coupon Code',
+                                                        enabledBorder: OutlineInputBorder
+                                                        (
+                                                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                                          borderSide: BorderSide(color: Colors.blue,width: 1.5)
+                                                        ),
+                                                        focusedBorder: OutlineInputBorder
+                                                        (
+                                                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                                          borderSide: BorderSide(color: Colors.blue,width: 1.5)
+                                                        ),
+                                                        disabledBorder: OutlineInputBorder
+                                                        (
+                                                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                                          borderSide: BorderSide(color: Colors.blue,width: 1.5)
+                                                        )
+                                                      ),
                                   ),
                                 ),
-                              ),
+                                const SizedBox(width: 5.0,),
+                                ElevatedButton
+                                (
+                                  onPressed:(){}, 
+                                  style: ElevatedButton.styleFrom
+                                  (
+                                    shape:RoundedRectangleBorder
+                                    (
+                                      borderRadius: BorderRadius.circular(15.0)
+                                    ),
+                                    minimumSize: Size(50, 50)
+                                  ),
+                                  child:Text("Apply Coupon")
+                                )
+                              ],
                             ),
+                            const SizedBox(height: 5.0,),
+                            InkWell
+                            (
+                              onTap: ()
+                              {
+                                value.deleteAllTableRecords();
+                                value.setCounterToZero();
+                                value.setTotalPriceToZero();
+                                value.getItemId().then((listOfId) => print(listOfId));
+                                Scaffold.of(context).showSnackBar(SnackBar(content:Text("Items deleted on successfully payment")));
+                              },
+                              child: Container
+                                  (
+                                    width: 100,
+                                    //width: double.infinity,
+                                    height: 35,
+                                    decoration: BoxDecoration
+                                    (
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.circular(15.0)
+                                    ),
+                                    child: const Padding(
+                                      padding:  EdgeInsets.all(8.0),
+                                      child: Text
+                                      (
+                                        "Pay now",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle
+                                        (
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                );
-              })
+                    ),
+                  );
+                }),
+            )
           ],
         ),
       ),
